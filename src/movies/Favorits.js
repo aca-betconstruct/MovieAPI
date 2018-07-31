@@ -86,7 +86,6 @@ class Favorits extends Component {
 
 
         localStorage.setItem("favorits", JSON.stringify(a));
-
         this.setState({fave: []});
     }
 

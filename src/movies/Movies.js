@@ -23,7 +23,7 @@ class Movies extends Component {
             this.getData(1)
         }
 
-        let val = event.target.value.replace(/\s+/g, '+');
+        const val = event.target.value.replace(/\s+/g, '+');
         this.request("http://api.themoviedb.org/3/search/movie?api_key=418a2c57e3a40a68638d0017f189fca9&query=" + val);
     }
 
@@ -97,6 +97,7 @@ class Movies extends Component {
     isliked(object) {
 
         let favorits = JSON.parse(localStorage.getItem("favorits"));
+        favorits = favorits || [{}];
         let user_id = JSON.parse(localStorage.getItem("activeUserId"));
         let item = favorits.find((item) => {
             return item.user_id == user_id;
