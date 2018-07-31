@@ -6,6 +6,7 @@ import {Link} from "react-router-dom";
 import download from './download.svg';
 import ReactPaginate from 'react-paginate';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {loadMovies} from "../actions";
 
 
 class Movies extends Component {
@@ -33,19 +34,7 @@ class Movies extends Component {
     }
 
     request(url) {
-        fetch(url).then((response) => {
-            return response.json();
-        }).then((data) => {
-            if (!data.results) {
-                return
-            }
-            this.pageConunt = data.total_pages;
-            let aa = JSON.stringify(data.results);
-            localStorage.setItem('data', aa);
-            this.setState({results: []});
-        }).catch((err) => {
-
-        });
+        this.props.dispatch(loadMovies(url));
     }
 
     static pageConunt = 0;
@@ -58,6 +47,7 @@ class Movies extends Component {
     };
 
     getData(page) {
+        debugger
         this.request("https://api.themoviedb.org/3/movie/top_rated?api_key=418a2c57e3a40a68638d0017f189fca9&page=" + page);
     }
 
@@ -103,7 +93,7 @@ class Movies extends Component {
             return item.user_id == user_id;
         });
 
-        if (item) {
+        if (item && Object.keys(item).length) {
 
             let elem = item.fave.find((elem)=>{
                 return elem.id == object.id;
@@ -142,7 +132,7 @@ class Movies extends Component {
                 <div>
                     <div className="container">
                         <div className="row">
-                            {JSON.parse(localStorage.getItem('data')).map((object) =>
+                            {this.props.movies.length && this.props.movies.map((object) =>
                                 <div className={"col-md-6 col-lg-6 col-sm-12 col-xs-12 center"}>
                                     <div className="card">
                                         <div className="img-content">
@@ -202,7 +192,8 @@ class Movies extends Component {
 
 const mapStateToProps = state => {
     return {
-        movies: state.movies
+        movies: state && state.SaveMoviesReducer && state.SaveMoviesReducer.movies,
+        Favorites: state && state.Favorites
     }
 };
 

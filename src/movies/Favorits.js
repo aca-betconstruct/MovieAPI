@@ -7,6 +7,7 @@ import download from './download.svg';
 
 class Favorits extends Component {
     constructor(props) {
+        debugger
         super(props);
         this.state = {fave: []};
         let user_id = localStorage.getItem("activeUserId");
